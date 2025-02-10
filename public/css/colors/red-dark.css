@@ -1,0 +1,486 @@
+/*@import 'https://fonts.googleapis.com/css?family=Rubik:300,400,500,700,900'; */
+/*Theme Colors*/
+/*bootstrap Color*/
+/*Light colors*/
+/*Normal Color*/
+/*Extra Variable*/
+/*Preloader*/
+.preloader {
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    position: fixed;
+    z-index: 99999;
+    background: #fff;
+}
+
+
+button {
+    background: transparent;
+}
+
+.preloader .cssload-speeding-wheel {
+    position: absolute;
+    top: calc(50% - 3.5px);
+    left: calc(50% - 3.5px);
+}
+
+.exp a {
+    color: #f7f7f7 !important;
+}
+
+.exp a:hover {
+    color: #2fee00 !important;
+}
+
+/*******************
+/*Top bar
+*******************/
+.topbar {
+    background: #e60000 /* Old browsers /
+    background: -moz-linear-gradient(left, #f62d51 0%, #660fb5 100%);
+    /* FF3.6-15 /
+    background: -webkit-linear-gradient(left, #f62d51 0%, #660fb5 100%);
+    /* Chrome10-25,Safari5.1-6 /
+    background: linear-gradient(to right, #f62d51 0%, #660fb5 100%);
+    /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+
+.topbar .top-navbar .navbar-header .navbar-brand .dark-logo {
+    display: none;
+}
+
+.topbar .top-navbar .navbar-header .navbar-brand .light-logo {
+    display: inline-block;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.topbar .navbar-light .navbar-nav .nav-item > a.nav-link {
+    color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.topbar .navbar-light .navbar-nav .nav-item > a.nav-link:hover, .topbar .navbar-light .navbar-nav .nav-item > a.nav-link:focus {
+    color: #ffffff !important;
+}
+
+/*******************
+/*General Elements
+*******************/
+a {
+    color: #f62d51;
+}
+
+a.link:hover, a.link:focus {
+    color: #f62d51 !important;
+}
+
+.bg-theme {
+    background-color: #f62d51 !important;
+}
+
+.pagination > .active > a,
+.pagination > .active > span,
+.pagination > .active > a:hover,
+.pagination > .active > span:hover,
+.pagination > .active > a:focus,
+.pagination > .active > span:focus {
+    background-color: #f62d51;
+    border-color: #f62d51;
+}
+
+.right-sidebar .rpanel-title {
+    background: #f62d51;
+}
+
+.stylish-table tbody tr:hover, .stylish-table tbody tr.active {
+    border-left: 4px solid #f62d51;
+}
+
+.text-themecolor {
+    color: #f62d51 !important;
+}
+
+.profile-tab li a.nav-link.active,
+.customtab li a.nav-link.active {
+    border-bottom: 2px solid #f62d51;
+    color: #f62d51;
+}
+
+.profile-tab li a.nav-link:hover,
+.customtab li a.nav-link:hover {
+    color: #f62d51;
+}
+
+/*******************
+/*Buttons
+*******************/
+.btn-themecolor,
+.btn-themecolor.disabled {
+    background: #f62d51;
+    color: #ffffff;
+    border: 1px solid #f62d51;
+}
+
+.btn-themecolor:hover,
+.btn-themecolor.disabled:hover {
+    background: #f62d51;
+    opacity: 0.7;
+    border: 1px solid #f62d51;
+}
+
+.btn-themecolor.active, .btn-themecolor:focus,
+.btn-themecolor.disabled.active,
+.btn-themecolor.disabled:focus {
+    background: #028ee1;
+}
+
+/*******************
+/*sidebar navigation
+*******************/
+.card-no-border .left-sidebar, .card-no-border .sidebar-nav {
+    background: #272c33;
+}
+
+.mini-sidebar .sidebar-nav {
+    background: transparent;
+}
+
+@media (min-width: 768px) {
+    .mini-sidebar .sidebar-nav #sidebarnav > li > ul {
+        background: #181c22;
+    }
+}
+
+.sidebar-nav {
+    background: #990000;
+}
+
+.sidebar-nav ul li a {
+    color: #798699;
+}
+
+.sidebar-nav ul li a.active, .sidebar-nav ul li a:hover {
+    color: #f62d51;
+}
+
+.sidebar-nav ul li a.active {
+    color: #ffffff;
+}
+
+.sidebar-nav ul li.nav-small-cap {
+    color: #90a4ae;
+}
+
+.sidebar-nav > ul > li.active > a {
+    border-left: 3px solid #f62d51;
+    color: #f62d51;
+}
+
+.sidebar-nav > ul > li.active > a i {
+    color: #f62d51;
+}
+
+.sidebar-nav > ul > li > a {
+    border-left: 3px solid #272c33;
+}
+
+.sidebar-nav > ul > li > a.active, .sidebar-nav > ul > li > a:hover {
+    border-left: 3px solid #f62d51;
+}
+
+.sidebar-nav > ul > li > a.active i, .sidebar-nav > ul > li > a:hover i {
+    color: #f62d51;
+}
+
+.sidebar-nav > ul > li > a i {
+    color: #798699;
+}
+
+.sidebar-nav > ul > li > a.active {
+    font-weight: 400;
+    background: #ffffff;
+    color: #f62d51;
+}
+
+.user-profile .profile-text a {
+    color: #798699 !important;
+}
+
+.card-no-border .sidebar-footer {
+    background: #181c22;
+}
+
+/* -------------------------------------------------------------------
+ * ## pace.js styles - minimal
+ * ------------------------------------------------------------------- */
+.pace {
+    -webkit-pointer-events: none;
+    pointer-events: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+.pace-inactive {
+    display: none;
+}
+
+.pace .pace-progress {
+    background: #fff;
+    position: fixed;
+    z-index: 900;
+    top: 0;
+    right: 100%;
+    width: 100%;
+    height: 3px;
+}
+
+.oldie .pace {
+    display: none;
+}
+
+#countdown {
+    position: relative;
+    margin: auto;
+    height: 40px;
+    width: 40px;
+    text-align: center;
+}
+
+#countdown-number {
+    color: #d2d2e6 !important;
+    display: inline-block;
+    line-height: 40px;
+}
+
+svg {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40px;
+    height: 40px;
+    transform: rotateY(-180deg) rotateZ(-90deg);
+}
+
+svg circle {
+    stroke-dasharray: 113px;
+    stroke-dashoffset: 0px;
+    stroke-linecap: round;
+    stroke-width: 2px;
+    stroke: #c7c7e1;
+    fill: none;
+    animation: countdown 60s linear backwards;
+}
+
+@keyframes countdown {
+    from {
+        stroke-dashoffset: 0px;
+    }
+    to {
+        stroke-dashoffset: 113px;
+    }
+}
+
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.58);
+    z-index: 999;
+    visibility: hidden;
+    opacity: 0;
+    transition: all 0.5s;
+}
+
+#overlay.show {
+    visibility: visible;
+    opacity: 1;
+}
+
+.over {
+    background-image: linear-gradient(to top, #f43b47 0%, #453a94 100%);
+}
+
+.deign20 {
+    height: auto;
+    top: 5%;
+    width: 60%;
+    background: rgba(19, 7, 7, 0.55) !important;
+}
+
+.personal-form {
+    color: #636C71 !important;
+    background-color: rgb(239, 239, 239) !important;
+    border-radius: 20px !important;
+    padding: 10px 15px 10px 15px !important;
+}
+
+.overlayme {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, .5);
+    opacity: 0.3;
+    visibility: visible;
+    transition: .3s linear;
+}
+
+.image-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    background: rgb(17, 16, 16);
+    opacity: 0.3;
+    visibility: visible;
+    transition: .3s linear;
+}
+
+.index {
+    z-index: 20;
+}
+
+.para {
+    color: rgb(99, 108, 113) !important;
+}
+
+
+
+
+.cards {
+    background-color: rgba(53, 35, 35, 0.38) !important
+}
+
+@media (max-width: 988px) {
+    .words {
+        display: none;
+
+    }
+}
+
+@media (max-width: 738px) {
+    .logos {
+        display: none;
+    }
+}
+
+
+/*
+====================================================
+*End Style
+*Start Vodacom Colours
+====================================================
+*/
+
+.report-line {
+    border-bottom: 2px solid #9A7F6B;
+    position: relative;
+    z-index: 10
+}
+
+.report-line:before {
+    content: "";
+    display: block;
+    position: absolute;
+    z-index: -1;
+    top: 2px;
+    left: 2px;
+    right: 2px;
+    bottom: 2px;
+    border-bottom: 2px solid #e60000
+}
+
+.report-box {
+    -webkit-box-shadow: -8px 18px 6px 0px rgba(0, 0, 0, 0.71);
+    -moz-box-shadow: -8px 18px 6px 0px rgba(0, 0, 0, 0.71);
+    box-shadow: -8px 18px 6px 0px rgba(0, 0, 0, 0.71);
+}
+
+.report-background {
+    background: #9A7F6B;
+}
+
+.bold {
+    font-weight: 600;
+}
+
+.vodafone_red {
+    background: #e60000;
+}
+
+.vodafone_white {
+    background: #ffffff;
+}
+
+.vodafone_grey {
+    background: #4a4d4e;
+}
+
+.turquoise {
+    background: #007c92;
+}
+
+.aqua_blue {
+    background: #00b0ca;
+}
+
+.aubergine {
+    background: #5e2750;
+}
+
+.red_violet {
+    background: #9c2aa0;
+}
+
+.fresh_orange {
+    background: #eb9700;
+}
+
+.lemon_yellow {
+    background: #fecb00;
+}
+
+.spring_green {
+    background: #a8b400;
+}
+
+.black {
+    background: #000000;
+}
+
+.maroon {
+    background: #990000;
+}
+
+.digital_green {
+    background: #428600;
+}
+
+.dark_red {
+    background: #bd0000;
+}
+
+.f4f4f4 {
+    background: #f4f4f4;
+}
+
+.ebebeb {
+    background: #ebebeb;
+}
+
+.cccccc {
+    background: #cccccc;
+}
+
+.afafaf {
+    background: #afafaf;
+}
+
+

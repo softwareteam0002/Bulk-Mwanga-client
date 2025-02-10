@@ -1,0 +1,119 @@
+<IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
+
+    RewriteEngine On
+
+    # Handle Authorization Header
+    RewriteCond %{HTTP:Authorization} .
+    RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+
+    # Redirect Trailing Slashes If Not A Folder...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+
+    # Handle Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [L]
+</IfModule>
+
+<IfModule mod_php5.c>
+	php_value max_execution_time 300
+</IfModule>
+
+<Files .env>
+order allow,deny
+Deny from all
+</Files>
+
+<FilesMatch ".(log|cer)$">
+
+Order Allow,Deny
+
+Deny from all
+
+</FilesMatch>
+
+<FilesMatch ".(json)$">
+
+Order Allow,Deny
+
+Deny from all
+
+</FilesMatch>
+
+
+<Files .env>
+            order allow,deny
+            Deny from all
+        </Files>
+
+<Files composer.json>
+            order allow,deny
+            Deny from all
+        </Files>
+<Files server.php>
+            order allow,deny
+            Deny from all
+        </Files>
+
+
+<Files composer.lock>
+            order allow,deny
+            Deny from all
+        </Files>
+
+<Files package.json>
+            order allow,deny
+            Deny from all
+        </Files>
+
+<Files .styleci.yml>
+            order allow,deny
+            Deny from all
+        </Files>
+
+<Files webpack.mix.js>
+            order allow,deny
+            Deny from all
+        </Files>
+
+<Files phpunit.xml>
+            order allow,deny
+            Deny from all
+        </Files>
+<Files artisan>
+            order allow,deny
+            Deny from all
+        </Files>
+
+
+<Files storage>
+    order allow,deny
+    Deny from all
+</Files>
+
+<Files .env.example>
+
+    order allow,deny
+    Deny from all
+</Files>
+<Files .json>
+
+    order allow,deny
+    Deny from all
+</Files>
+
+
+<Files .env.save>
+
+    order allow,deny
+    Deny from all
+</Files>
+
+
+

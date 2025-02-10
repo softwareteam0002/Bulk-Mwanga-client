@@ -1,0 +1,26 @@
+.vertical-separator {
+    width: 1px;
+    height: 40px;
+    background-color: #ddd;
+    margin: auto;
+}
+
+.card {
+    border-radius: 10px;
+}
+
+.card h4 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.card-detail span {
+    font-size: 14px;
+    color: #666;
+}
+
+.progress {
+    height: 20px;
+    border-radius: 5px;
+}

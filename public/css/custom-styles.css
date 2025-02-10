@@ -1,0 +1,464 @@
+.header-topbar {
+    background-color: #ffffff;
+    color: white;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header-navs {
+    color: #636C71;
+}
+
+.head-navs {
+    color: #fff;
+}
+
+.header-nav-dropdown {
+    width: 70px;
+}
+
+.header-form {
+    display: none;
+}
+
+.dashboard-cont {
+    margin-top: 20px;
+}
+
+.dashboard-cont-two {
+    margin: 0 8px -12px;
+    padding-top: 12px;
+}
+
+.org-rowbox {
+    margin-left: 5px;
+    margin-right: 0.7%;
+}
+
+.org-initalert {
+    height: 40px;
+    background-color: #E60100;
+    color: white;
+    margin-bottom: 0;
+    margin-top: 10px;
+    text-align: left
+}
+
+.org-namebox {
+    height: 40px !important;
+    margin-bottom: 0;
+    margin-top: 10px;
+    text-align: left;
+}
+
+.org-cardrow {
+    margin-left: 5px;
+}
+
+.card-head {
+    font-size: 30px;
+}
+
+.org-name {
+    margin-left: 10px;
+}
+
+.card-procd {
+    color: #1d75d8;
+}
+
+.card-succ {
+    color: #00805b;
+}
+
+.card-fail {
+    color: #e6b000;
+}
+
+.chartbox-row {
+    height: 275px !important;
+}
+
+.transvol {
+    margin-bottom: 0px;
+}
+
+.ctchart-height {
+    height: 250px !important;
+}
+
+.latest-btch {
+    height: auto;
+}
+
+.boxtable {
+    float: right;
+    text-align: left;
+    font-size: 14px;
+    margin-bottom: 22px;
+    margin-top: 12px;
+}
+
+.tbl-preprofa {
+    margin: 0;
+    text-align: left;
+    box-shadow: none;
+    font-size: 14px
+}
+
+.sidebar-background {
+    background-color: #00A5D8;
+}
+
+.pagewrapper {
+    background-color: white !important;
+}
+
+.last-login {
+    margin-left: 5px;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.login-page {
+    min-height: 100% !important;
+    background: transparent !important;
+}
+
+.change-password {
+    color: rgb(99, 108, 113);
+}
+
+.overlay-card {
+    background: rgba(68, 40, 102, 0.54) !important;
+}
+
+.overlay-link {
+    background: rgba(227, 32, 46, 0.15) !important;
+}
+
+.login-agreement {
+    background: rgba(14, 48, 83, 0.61) !important;
+}
+
+.agreement-para {
+    color: #b5c1cc !important;
+}
+
+.wrapper-img {
+    background: url('https://uat.ubx.co.tz:8888/mhb_internal-disbursement/public/img/landing.jpg');
+}
+
+.card-img {
+    width: 15%;
+    height: auto;
+}
+
+.paratext {
+    text-align: left;
+}
+
+.paracolor {
+    color: #e4f7ff;
+}
+
+.alertbox {
+    visibility: hidden;
+}
+
+.alertbox-div {
+    background: rgba(68, 40, 102, 0.54) !important;
+}
+
+.flash-message {
+    background: transparent !important;
+    border: 1px red solid;
+}
+
+.mpesalogowhite {
+    width: 150px;
+    height: 60px;
+}
+
+.loginbtn {
+    width: 100%;
+    background: rgb(228, 121, 47);
+    color: #FFF;
+}
+
+
+.login-html {
+    min-height: 100% !important;
+    background: transparent !important;
+}
+
+.waves-btn {
+    background: rgba(68, 40, 102, 0.54) !important;
+}
+
+.waves-link {
+    background: rgba(227, 32, 46, 0.15) !important;
+}
+
+.agreement-div {
+    background: rgba(14, 48, 83, 0.61) !important;
+}
+
+.create-div {
+    background-color: white;
+    margin-top: 20px;
+    width: 100%;
+    margin-right: 0;
+}
+
+.dld-template {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.chk-bal {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 2px
+}
+
+.upload-btn {
+    margin-top: 10px;
+}
+
+.chkbal {
+    text-align: center;
+}
+
+.spinner {
+    width: 45px;
+}
+
+.changepswd {
+    width: 5%;
+    height: auto;
+}
+
+.changepswd-div {
+    visibility: visible;
+}
+
+.changepswd-logo {
+    width: 115px;
+}
+
+.changepswd-text {
+    color: white;
+    font-weight: bold;
+    text-align: center;
+}
+
+.changepswd-username {
+    width: 100%;
+    background: #fff;
+}
+
+.change-change {
+    background: #000;
+    background: rgba(6, 17, 28, 0.61);
+    color: #FFF;
+}
+
+.lkd-link {
+    background: rgba(6, 17, 28, 0.61);
+    color: #FFF;
+    border: none;
+}
+
+.lkd-user {
+    font-size: 50px;
+    color: black;
+}
+
+.lkdiv-user {
+    color: #fff;
+    text-align: center;
+}
+
+.actv-session {
+    color: #e60000;
+    padding: 14px;
+    background-color: white;
+    font-weight: bold;
+}
+
+.help-txt {
+    font-style: italic;
+    font-size: 0.8rem
+}
+
+.verif-page {
+    background-color: white;
+    margin-top: 20px
+}
+
+.verif-breadcrumb {
+    margin-bottom: 10px;
+}
+
+.stat-row {
+    background-color: #00A5D8;
+    color: white;
+}
+
+.bank-create {
+    background-color: white;
+    margin-top: 20px;
+    width: 100%;
+    margin-right: 0
+}
+
+.bank-checkbalance {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 12px
+}
+
+.create-mno {
+    background-color: white;
+    margin-top: 20px;
+    width: 100%;
+    margin-right: 0;
+}
+
+.mobile-div {
+    float: left;
+    margin-bottom: 10px;
+}
+
+.mobile-btn {
+    float: left;
+}
+
+.resend-btn {
+    background: #0094d6;
+    background: rgba(6, 17, 28, 0.61);
+    color: #FFF;
+    width: 100%;
+    text-align: center;
+}
+
+.animateform {
+    width: 10%;
+}
+
+.sure {
+    height: 50px;
+}
+
+.sure-para {
+    line-height: 50px;
+    margin-left: 2px;
+    text-align: center
+}
+
+.otp-checkbox {
+    width: 90px;
+    height: 23px;
+}
+
+.rolem {
+    margin: 0;
+}
+
+.delegated {
+    margin-left: 3px;
+    color: #e60100
+}
+
+.prod-color {
+    color: #E60100
+}
+
+.enty-proc {
+    color: #3386ba;
+}
+
+.enty-suc {
+    color: #30ba37
+}
+
+.enty-pen {
+    color: #e5b509;
+}
+
+.ob-view {
+    display: inline;
+}
+
+.int-dash {
+    margin: 0 8px -12px;
+    padding-top: 12px;
+}
+
+.butn-logout {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 9px 15px;
+    display: block;
+    color: #54667a;
+}
+
+
+/* Add shadow to cards */
+.card {
+    padding: 20px;
+    border: none;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.card:hover {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Spacing and layout refinements */
+.card-body {
+    padding: 20px;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.card-subtitle {
+    font-size: 0.9rem;
+    color: #888;
+}
+
+.card-detail {
+    margin-bottom: 15px;
+}
+
+.big-number {
+    font-size: 30px;
+    font-weight: bold;
+    color: #333;
+}
+
+.card-link {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 1.2rem;
+}
+
+.card-link:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}
+
+.mb-4 {
+    margin-bottom: 1.5rem;
+}
+
+.mod-head{
+    color: #fff;
+}
+
