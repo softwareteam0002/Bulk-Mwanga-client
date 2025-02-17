@@ -3,12 +3,16 @@
 namespace App\Http\Controllers\Api;
 
 use App\Helper\BankDisbursementApiHelper;
+use App\Helper\ConstantList;
 use App\Helper\CredentialsRepo;
 use App\Helper\DisbursementApiHelper;
+use App\Helper\FspCodeHelper;
 use App\Helper\HttpHelper;
+use App\Helper\PayloadHelper;
 use App\Helper\Util;
 use App\Helper\XMLHelper;
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Services\TokenServiceController;
 use App\Jobs\BankProcessBatch;
 use App\Jobs\ProcessBatch;
 use App\Models\BankBatchPayment;
@@ -20,6 +24,7 @@ use App\Models\BatchProcessing;
 use App\Models\Disbursement;
 use App\Models\DisbursementOpeningBalance;
 use App\Models\DisbursementPayment;
+use App\Models\FspCode;
 use App\Models\Organization;
 use App\Models\OrganizationAccountBalance;
 use App\Models\TransactionCharge;
@@ -421,7 +426,7 @@ class PaymentController extends Controller
 
         foreach ($batch_entries as $entry) {
 
-            if ($entry->payment_status == Disbursement::STATUS_PAID && !$reverify) {
+            if ((int)$entry->payment_status === Disbursement::STATUS_PAID && !$reverify) {
                 continue;
             }
 
@@ -431,34 +436,32 @@ class PaymentController extends Controller
             if (empty($data) || !empty($error)) {
                 $entry->update([
                     'payment_status' => Disbursement::STATUS_ERROR,
-                    'status_description' => $data['MESSAGE'] ?? 'Name check failed (Network)'
+                    'status_description' => $data['error'] ?? 'Name check failed (Network)'
                 ]);
                 ++$failed_requests;
                 continue;
             }
 
-            if (!is_numeric($data['TXNSTATUS']) || $data['TXNSTATUS'] != 0) {
+            $names = Util::getFirstAndLastName($data['fullName']);
+
+            $networkName = FspCode::query()
+                ->select('id', 'fsp_name')
+                ->where('fsp_code', $data['prielements']['fspid'] ?? null)
+                ->first()
+                ->fsp_name;
+
+            if (empty($names) || empty($networkName)) {
                 $entry->update([
                     'payment_status' => Disbursement::STATUS_ERROR,
-                    'status_description' => $data['MESSAGE'] ?? 'Name check failed'
+                    'status_description' => 'Name check failed - Failed to get names or network name'
                 ]);
                 continue;
             }
 
-            //halotel phone numbers all names comes on the FIRSTNAME field
-            if (empty($data['LASTNAME']) && !empty($data['FIRSTNAME'])) {
-                $names = explode(" ", $data['FIRSTNAME']);
-                $first_name = $names[0];
-                $last_name = count($names) > 1 ? $names[1] : '';
-            } else {
-                $first_name = $data['FIRSTNAME'];
-                $last_name = $data['LASTNAME'];
-            }
-
             $entry->update([
-                'verified_first_name' => $first_name,
-                'verified_last_name' => $last_name,
-                'network_name' => $data['REFERENCEID'],
+                'verified_first_name' => $names['firstName'],
+                'verified_last_name' => $names['lastName'],
+                'network_name' => $networkName,
                 'payment_status' => Disbursement::STATUS_PAID,
                 'status_description' => 'Name check successful'
             ]);
@@ -467,26 +470,68 @@ class PaymentController extends Controller
         $total_amount += DB::table('disbursements')->where('batch_no', '=', $batch->batch_no)->sum('withdrawal_fee');
 
         $batch->update(['total_amount' => $total_amount]);
-        /*Log::info("--------------------SENDING EMAILS TO APPROVER(S) -----------------");
-        $approvers  = OrganizationApproval::query()
-                ->select('users.email', 'users.id','users.phone_number','organization_approval.approval_level')
-                ->join('users', 'users.id', '=', 'organization_approval.user_id')
-                ->where(['organization_approval.organization_id' => $batch_processing->organization_id])->get();
 
-
-            foreach($approvers as $first_approvers){
-                if($first_approvers->approval_level = 1){
-                    $mail = new MailController();
-                    $token = $batch->batch_no;
-                    if(!is_null($first_approvers->email)){
-                        $mail->sendApprovalEmail($first_approvers->email, 5, $token);
-                    }
-
-                }
-            }
-        Log::info("--------------------COMPLETE SENDING EMAILS TO APPROVER(S) -----------------");*/
         return 1;
     }
+    /* public function processBatchVerification($batch, $batch_processing, $reverify = false)
+     {
+
+         $batch_entries = Disbursement::query()->where(['batch_no' => $batch->batch_no])->get();
+
+         $failed_requests = 0;
+         $entries_count = count($batch_entries);
+
+         foreach ($batch_entries as $entry) {
+
+             if ($entry->payment_status == Disbursement::STATUS_PAID && !$reverify) {
+                 continue;
+             }
+
+             ['data' => $data, 'error' => $error] = $this->customerNameSearch($entry);
+
+             //Failed to search customer name - Connectivity issue
+             if (empty($data) || !empty($error)) {
+                 $entry->update([
+                     'payment_status' => Disbursement::STATUS_ERROR,
+                     'status_description' => $data['MESSAGE'] ?? 'Name check failed (Network)'
+                 ]);
+                 ++$failed_requests;
+                 continue;
+             }
+
+             if (!is_numeric($data['TXNSTATUS']) || $data['TXNSTATUS'] != 0) {
+                 $entry->update([
+                     'payment_status' => Disbursement::STATUS_ERROR,
+                     'status_description' => $data['MESSAGE'] ?? 'Name check failed'
+                 ]);
+                 continue;
+             }
+
+             //halotel phone numbers all names comes on the FIRSTNAME field
+             if (empty($data['LASTNAME']) && !empty($data['FIRSTNAME'])) {
+                 $names = explode(" ", $data['FIRSTNAME']);
+                 $first_name = $names[0];
+                 $last_name = count($names) > 1 ? $names[1] : '';
+             } else {
+                 $first_name = $data['FIRSTNAME'];
+                 $last_name = $data['LASTNAME'];
+             }
+
+             $entry->update([
+                 'verified_first_name' => $first_name,
+                 'verified_last_name' => $last_name,
+                 'network_name' => $data['REFERENCEID'],
+                 'payment_status' => Disbursement::STATUS_PAID,
+                 'status_description' => 'Name check successful'
+             ]);
+         }
+         $total_amount = DB::table('disbursements')->where('batch_no', '=', $batch->batch_no)->sum('amount');
+         $total_amount += DB::table('disbursements')->where('batch_no', '=', $batch->batch_no)->sum('withdrawal_fee');
+
+         $batch->update(['total_amount' => $total_amount]);
+
+         return 1;
+     }*/
 
 
     /**
@@ -611,44 +656,102 @@ class PaymentController extends Controller
     public function customerNameSearch($entry)
     {
         $phone_number = Util::addPhonePrefix($entry->phone_number);
-        $reference = Util::generateRandom(20);
-        $req_data = [
-            'initiator' => CredentialsRepo::getInitiatorUsername($entry->batch->organization_id),
-            'initiatorPassword' => CredentialsRepo::getInitiatorPassword($entry->batch->organization_id),
-            'TYPE' => 'QuerySubscriberReq',
-            'REFERENCEID' => $reference,
-            'MSISDN' => $phone_number,
-            'MSISDN1' => $phone_number
-        ];
+        $reference = Util::generateRandom(ConstantList::REFERENCE_LENGTH);
+        $date = now()->format('d-M-Y');
 
-        $req_xml = XMLHelper::arrayToXML($req_data, 'COMMAND');
+        $req_data = PayloadHelper::lookupPayload(
+            ConstantList::PAYMENT_TYPE,
+            $date,
+            $reference,
+            $phone_number,
+            ConstantList::IDENTIFIER_MSISDN
+        );
 
         $tx = TxCustomerNameSearch::query()->create([
             'entry_id' => $entry->id,
             'reference_number' => $reference,
             'phone_number' => $phone_number,
             'status' => 'PENDING',
-            'request_dump' => $req_xml,
+            'request_dump' => json_encode($req_data),
         ]);
 
-        ['code' => $httpCode, 'data' => $raw_response, 'error' => $error] = HttpHelper::send($req_xml, true, 'raw', HttpHelper::API_ENDPOINT_NAMECHECK_SIMULATION);
+        $token = TokenServiceController::fetchJwtToken();
 
-        $data = empty($raw_response) ? null : XMLHelper::XMLStringToArray($raw_response);
-
-        if (!empty($error) || $httpCode != 200) {
-            $tx->update(['status' => 'FAILED', 'failure_reason' => HttpHelper::guessFailureReason($httpCode, $error)]);
+        if (!$token) {
+            $error = ConstantList::AUTH_FAILED;
+            $tx->update(['status' => ConstantList::STATUS_FAILED, 'failure_reason' => $error, 'response_dump' => ""]);
             return ['data' => null, 'error' => $error];
-        } else if (empty($data)) {
-            $tx->update(['status' => 'FAILED', 'failure_reason' => 'INVALID_RESPONSE', 'response_dump' => $raw_response]);
-            return ['data' => null, 'error' => "Invalid response!"];
-        } else if (is_numeric($data['TXNSTATUS']) && $data['TXNSTATUS'] == 0) {
-            $tx->update(['status' => 'SUCCESS', 'network_name' => $data['REFERENCEID'], 'response_dump' => $raw_response]);
-            return ['data' => $data, 'error' => null];
-        } else {
-            $tx->update(['status' => 'FAILED', 'response_dump' => $raw_response]);
-            return ['data' => null, 'error' => $data->responseDesc ?? "Invalid response"];
         }
+
+        $response = HttpHelper::sendCurlRequest(
+            HttpHelper::API_ENDPOINT_NAMECHECK_SIMULATION,
+            'POST', $req_data,
+            '',
+            '',
+            $token
+        );
+
+
+        if (!empty($response['error'])) {
+            $tx->update(['status' => 'FAILED', 'failure_reason' => 'INVALID_RESPONSE']);
+            return ['data' => null, 'error' => $response['error']];
+        }
+
+        if (!$response) {
+            $tx->update(['status' => 'FAILED', 'failure_reason' => 'INVALID_RESPONSE', 'response_dump' => $response]);
+            return ['data' => null, 'error' => "Invalid response!"];
+        }
+
+        if (isset($response->stscode) && $response->stscode === ConstantList::HDPAY_SUCCESS) {
+            $data = $response->acinfo->acdetails ?? null;
+            $tx->update(['status' => 'SUCCESS','response_dump' => $response]);
+            return ['data' => $data, 'error' => null];
+        }
+
+        $tx->update(['status' => 'FAILED', 'response_dump' => $response]);
+        return ['data' => null, 'error' => $response->message ?? "Invalid response"];
     }
+    /* public function customerNameSearch($entry)
+     {
+         $phone_number = Util::addPhonePrefix($entry->phone_number);
+         $reference = Util::generateRandom(20);
+         $req_data = [
+             'initiator' => CredentialsRepo::getInitiatorUsername($entry->batch->organization_id),
+             'initiatorPassword' => CredentialsRepo::getInitiatorPassword($entry->batch->organization_id),
+             'TYPE' => 'QuerySubscriberReq',
+             'REFERENCEID' => $reference,
+             'MSISDN' => $phone_number,
+             'MSISDN1' => $phone_number
+         ];
+
+         $req_xml = XMLHelper::arrayToXML($req_data, 'COMMAND');
+
+         $tx = TxCustomerNameSearch::query()->create([
+             'entry_id' => $entry->id,
+             'reference_number' => $reference,
+             'phone_number' => $phone_number,
+             'status' => 'PENDING',
+             'request_dump' => $req_xml,
+         ]);
+
+         ['code' => $httpCode, 'data' => $raw_response, 'error' => $error] = HttpHelper::send($req_xml, true, 'raw', HttpHelper::API_ENDPOINT_NAMECHECK_SIMULATION);
+
+         $data = empty($raw_response) ? null : XMLHelper::XMLStringToArray($raw_response);
+
+         if (!empty($error) || $httpCode != 200) {
+             $tx->update(['status' => 'FAILED', 'failure_reason' => HttpHelper::guessFailureReason($httpCode, $error)]);
+             return ['data' => null, 'error' => $error];
+         } else if (empty($data)) {
+             $tx->update(['status' => 'FAILED', 'failure_reason' => 'INVALID_RESPONSE', 'response_dump' => $raw_response]);
+             return ['data' => null, 'error' => "Invalid response!"];
+         } else if (is_numeric($data['TXNSTATUS']) && $data['TXNSTATUS'] == 0) {
+             $tx->update(['status' => 'SUCCESS', 'network_name' => $data['REFERENCEID'], 'response_dump' => $raw_response]);
+             return ['data' => $data, 'error' => null];
+         } else {
+             $tx->update(['status' => 'FAILED', 'response_dump' => $raw_response]);
+             return ['data' => null, 'error' => $data->responseDesc ?? "Invalid response"];
+         }
+     }*/
 
     //function to disburse to bank
     public function bankDisbursement($organization, $entry, $batch_processing)
