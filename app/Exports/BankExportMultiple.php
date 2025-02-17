@@ -3,31 +3,28 @@
 namespace App\Exports;
 
 use Maatwebsite\Excel\Concerns\Exportable;
-use Maatwebsite\Excel\Concerns\FromCollection;
-use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 
 class BankExportMultiple implements WithMultipleSheets
 {
     use Exportable;
 
-    public  $number_of_batches=[];
-    public  $startDate;
-    public  $endDate;
-    public  $organizationId;
+    public $numberOfBatches = [];
+    public $startDate;
+    public $endDate;
+    public $organizationId;
 
     /**
      * ExportMultiple constructor.
-     * @param $number_of_batches
+     * @param array $numberOfBatches
      */
-    public function __construct(array $number_of_batches ,$startDate,$endDate,$organizationId)
+
+    public function __construct(array $numberOfBatches, $startDate, $endDate, $organizationId)
     {
-
-        $this->number_of_batches = $number_of_batches;
-        $this->startDate  = $startDate;
-        $this->endDate =  $endDate;
-        $this->organizationId=$organizationId;
-
+        $this->numberOfBatches = $numberOfBatches;
+        $this->startDate = $startDate;
+        $this->endDate = $endDate;
+        $this->organizationId = $organizationId;
     }
 
 
@@ -36,14 +33,13 @@ class BankExportMultiple implements WithMultipleSheets
      */
     public function sheets(): array
     {
+        $sheets = [];
 
-        $sheets  = [];
+        for ($i = 0; $i < sizeof($this->numberOfBatches); $i++) {
 
-        for ($i=0; $i<sizeof($this->number_of_batches); $i++){
-
-            $sheets[] = new BankPaymentSheets($this->startDate,$this->endDate,$this->number_of_batches[$i],$this->organizationId);
+            $sheets[] = new BankPaymentSheets($this->startDate, $this->endDate, $this->numberOfBatches[$i], $this->organizationId);
         }
 
-        return  $sheets;
+        return $sheets;
     }
 }

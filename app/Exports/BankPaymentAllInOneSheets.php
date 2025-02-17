@@ -17,9 +17,9 @@ use PhpOffice\PhpSpreadsheet\Style\Fill;
 
 class BankPaymentAllInOneSheets implements FromView, WithTitle, WithEvents
 {
-    private  $startDate;
-    private  $endDate;
-    private  $organizationId;
+    private $startDate;
+    private $endDate;
+    private $organizationId;
     private static $disbursements = null;
 
     use Exportable, RegistersEventListeners;
@@ -42,7 +42,6 @@ class BankPaymentAllInOneSheets implements FromView, WithTitle, WithEvents
     public function view(): View
     {
         $disbursements = DB::table('bank_batch_payments as bv')
-
             ->whereBetween(DB::raw('date(bv.created_at)'), [date('Y-m-d', strtotime($this->startDate)), date('Y-m-d', strtotime($this->endDate))])
             ->where(['organization_id' => $this->organizationId])
             ->select(
@@ -65,7 +64,7 @@ class BankPaymentAllInOneSheets implements FromView, WithTitle, WithEvents
                 DB::raw('IF(dp.status_description IS NULL,
                 (CASE WHEN payment_status=1 THEN "Paid" WHEN payment_status=10 THEN "Sent"  WHEN payment_status=2 THEN "Failed" ELSE "Not processed" END),
                 dp.status_description) as status'),
-				'dp.payment_detail'
+                'dp.payment_detail'
             )
             ->join('bank_payment_disbursements as dp', 'dp.batch_no', '=', 'bv.batch_no')
             ->cursor();
@@ -106,14 +105,14 @@ class BankPaymentAllInOneSheets implements FromView, WithTitle, WithEvents
 
 
         self::$disbursements = $disbursements;
-        //        $handlers  =  BatchPayment::query()->select('operator','handler')->where(['batch_no'=>$this->batch])->first();
-        if (count($disbursements)>0){
+
+        if (count($disbursements) > 0) {
             $batch_no = $disbursements[0]->batch_no;
-            $orgName  = self::getOrganizationByBatchNumber($batch_no);
-        }else{
+            $orgName = self::getOrganizationByBatchNumber($batch_no);
+        } else {
             $orgName = "";
         }
-        
+
 
         return view('exports.bank.disbursements_one_sheets', [
             'disbursements' => $disbursements,
@@ -142,9 +141,7 @@ class BankPaymentAllInOneSheets implements FromView, WithTitle, WithEvents
      */
     public function headings(): array
     {
-        // TODO: Implement headings() method.
-
-        return   [
+        return [
 
             'batch_no',
             'first_name',
@@ -165,8 +162,8 @@ class BankPaymentAllInOneSheets implements FromView, WithTitle, WithEvents
         $event->sheet->getDelegate()->getStyle('A1:J1')->applyFromArray(
             [
                 'font' => [
-                    'size'      =>  15,
-                    'bold'      =>  true,
+                    'size' => 15,
+                    'bold' => true,
                 ],
                 'alignment' => [
                     'horizontal' => Alignment::HORIZONTAL_CENTER,
@@ -174,10 +171,10 @@ class BankPaymentAllInOneSheets implements FromView, WithTitle, WithEvents
             ]
         );
 
-        $event->sheet->getDelegate()->getStyle( 'D6')->applyFromArray(
+        $event->sheet->getDelegate()->getStyle('D6')->applyFromArray(
             [
-                'font'=>[
-                    'bold'      =>  true,
+                'font' => [
+                    'bold' => true,
                 ],
                 'alignment' => [
                     'horizontal' => Alignment::HORIZONTAL_RIGHT,
@@ -189,7 +186,7 @@ class BankPaymentAllInOneSheets implements FromView, WithTitle, WithEvents
         $event->sheet->getDelegate()->getStyle('A3:A6')->applyFromArray(
             [
                 'font' => [
-                    'bold'      =>  true,
+                    'bold' => true,
                 ],
                 'alignment' => [
                     'horizontal' => Alignment::HORIZONTAL_RIGHT,
@@ -200,7 +197,7 @@ class BankPaymentAllInOneSheets implements FromView, WithTitle, WithEvents
         $event->sheet->getDelegate()->getStyle('B3:H3')->applyFromArray(
             [
                 'font' => [
-                    'bold'      =>  true,
+                    'bold' => true,
                 ],
                 'alignment' => [
                     'horizontal' => Alignment::HORIZONTAL_RIGHT,
@@ -211,7 +208,7 @@ class BankPaymentAllInOneSheets implements FromView, WithTitle, WithEvents
         $event->sheet->getDelegate()->getStyle('A9:J9')->applyFromArray(
             [
                 'font' => [
-                    'bold'      =>  true,
+                    'bold' => true,
                 ],
                 'alignment' => [
                     'horizontal' => Alignment::HORIZONTAL_CENTER,
@@ -222,8 +219,8 @@ class BankPaymentAllInOneSheets implements FromView, WithTitle, WithEvents
         $event->sheet->getDelegate()->getStyle('A8:J8')->applyFromArray(
             [
                 'font' => [
-                    'size'      =>  12,
-                    'bold'      =>  true,
+                    'size' => 12,
+                    'bold' => true,
                 ],
                 'fill' => [
                     'fillType' => Fill::FILL_SOLID,
@@ -236,8 +233,8 @@ class BankPaymentAllInOneSheets implements FromView, WithTitle, WithEvents
         $event->sheet->getDelegate()->getStyle('A2:J2')->applyFromArray(
             [
                 'font' => [
-                    'size'      =>  12,
-                    'bold'      =>  true,
+                    'size' => 12,
+                    'bold' => true,
                 ],
                 'fill' => [
                     'fillType' => Fill::FILL_SOLID,
@@ -248,14 +245,14 @@ class BankPaymentAllInOneSheets implements FromView, WithTitle, WithEvents
             ]
         );
 
-        
+
     }
 
 
-    public static  function getOrganizationByBatchNumber($batch)
+    public static function getOrganizationByBatchNumber($batch)
     {
 
-        $org  =  BankBatchPayment::query()
+        $org = BankBatchPayment::query()
             ->select('organizations.name')
             ->join('organizations', 'organizations.id', '=', 'bank_batch_payments.organization_id')
             ->where(['batch_no' => $batch])
