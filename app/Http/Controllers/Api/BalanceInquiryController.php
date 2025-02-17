@@ -45,7 +45,13 @@ class BalanceInquiryController extends Controller
             'status' => 'PENDING',
             'initiator_id' => $credentials->id,
         ]);
+
         $response = HttpHelper::sendCurlRequest($url, 'GET', $data, $username, $password);
+
+        if (isset($response->status) && $response->status === 500) {
+            TxCheckBalance::query()->where('conversation_id', $conversation_id)->update(['status' => 'FAILED', 'response_dump' => json_encode($response),]);
+            return response()->json(['error' => 'Unable to fetch balance', 'code' => 500], 500);
+        }
 
         if ($response->available_bal) {
             TxCheckBalance::query()->where('conversation_id', $conversation_id)->update(['status' => 'SUCCESS', 'response_dump' => json_encode($response), 'current_balance' => $response->available_bal]);
